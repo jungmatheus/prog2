@@ -1,15 +1,62 @@
-#!/usr/bin/env python3
 
+#!/usr/bin/env python3
+from numba import njit
 from person import Person
+from time import perf_counter as pc
+from matplotlib import pyplot as plt
 
 def main():
-	f = Person(50)
-	print(f.getAge())
-	print(f.getDecades())
 
-	f.setAge(51)
-	print(f.getAge())
-	print(f.getDecades())
+	@njit
+	def fib_numba(n):
+		if n <= 1:
+			return n
+		else:
+			return fib_numba(n-1) + fib_numba(n-2)
+
+
+	def fib_py(n):
+		if n <= 1:
+			return n
+		else:
+			return fib_py(n-1) + fib_py(n-2)
+
+
+	def time_fib(func, n):
+		start = pc()
+		func(n)
+		end = pc()
+		return (end - start)
+	
+	f = Person(1)
+	time_numba = []
+	time_fibpy = []
+	time_fibc = []
+	ns = [k for k in range(30, 36)]
+	for n in ns:
+		time_numba.append(time_fib(fib_numba, n))
+		time_fibpy.append(time_fib(fib_py, n))
+		f.setAge(n)
+		start = pc()
+		f.fib()
+		end = pc()
+		time_fibc.append(end - start)
+
+	print(f"time fib numba: {time_numba}")
+	print(f"time fib c++: {time_fibc}")
+	print(f"time fib python: {time_fibpy}")
+
+
+	fig, ax = plt.subplots()
+	ax.plot(time_fibc, ns, linestyle='-', color='yellow', label='fib c++')
+	ax.plot(time_numba, ns, linestyle='--', color='orange', label='fib numba')
+	ax.plot(time_fibc, ns, linestyle=':', color='red', label='fib py')
+
+	plt.legend()
+	ax.set(xlabel='time(sec)', ylabel='n')
+	plt.savefig('fib.png')
+	plt.close()
+
 
 if __name__ == '__main__':
 	main()
