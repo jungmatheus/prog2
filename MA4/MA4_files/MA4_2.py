@@ -48,8 +48,8 @@ def main():
 
 
 	fig, ax = plt.subplots()
-	ax.plot(time_fibc, ns, linestyle='-', color='yellow', label='fib c++')
-	ax.plot(time_numba, ns, linestyle='--', color='orange', label='fib numba')
+	ax.plot(time_fibc, ns, linestyle='-', color='blue', label='fib c++')
+	ax.plot(time_numba, ns, linestyle='--', color='green', label='fib numba')
 	ax.plot(time_fibc, ns, linestyle=':', color='red', label='fib py')
 
 	plt.legend()
