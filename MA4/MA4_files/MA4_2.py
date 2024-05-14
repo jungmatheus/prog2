@@ -7,6 +7,12 @@ from matplotlib import pyplot as plt
 
 def main():
 
+
+	g = Person(50)
+	print(g.getDecades())
+	g.setAge(51)
+	print(g.getDecades())
+
 	@njit
 	def fib_numba(n):
 		if n <= 1:
@@ -27,12 +33,13 @@ def main():
 		func(n)
 		end = pc()
 		return (end - start)
-	
+
+
 	f = Person(1)
 	time_numba = []
 	time_fibpy = []
 	time_fibc = []
-	ns = [k for k in range(30, 36)]
+	ns = [k for k in range(30, 43)]
 	for n in ns:
 		time_numba.append(time_fib(fib_numba, n))
 		time_fibpy.append(time_fib(fib_py, n))
